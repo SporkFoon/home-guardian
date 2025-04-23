@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine } from 'recharts';
 import './Chart.css';
 
 /**
@@ -20,23 +20,48 @@ const GasChart = ({ data }) => {
     return <div className="chart-loading">Loading gas sensor data...</div>;
   }
 
+  // Find maximum values for each gas type for proper scaling
+  const findMaxValues = () => {
+    let maxSmoke = 0;
+    let maxLPG = 0;
+    let maxCO = 0;
+    
+    data.forEach(entry => {
+      maxSmoke = Math.max(maxSmoke, entry.smoke1 || 0, entry.smoke2 || 0);
+      maxLPG = Math.max(maxLPG, entry.lpg1 || 0, entry.lpg2 || 0);
+      maxCO = Math.max(maxCO, entry.co1 || 0, entry.co2 || 0);
+    });
+    
+    return { maxSmoke, maxLPG, maxCO };
+  };
+
+  const { maxSmoke, maxLPG, maxCO } = findMaxValues();
+
   // Get the appropriate y-axis domain based on visible data
   const getDomain = () => {
     let maxValue = 0;
     
-    data.forEach(entry => {
-      if (showSmoke) {
-        maxValue = Math.max(maxValue, entry.smoke1 || 0, entry.smoke2 || 0);
-      }
-      if (showLPG) {
-        maxValue = Math.max(maxValue, entry.lpg1 || 0, entry.lpg2 || 0);
-      }
-      if (showCO) {
-        maxValue = Math.max(maxValue, entry.co1 || 0, entry.co2 || 0);
-      }
-    });
+    // Only consider gas types that are visible
+    if (showSmoke) {
+      maxValue = Math.max(maxValue, maxSmoke);
+    }
+    if (showLPG) {
+      maxValue = Math.max(maxValue, maxLPG);
+    }
+    if (showCO) {
+      maxValue = Math.max(maxValue, maxCO);
+    }
+    
+    // Ensure a minimum scale even if values are low
+    maxValue = Math.max(maxValue, 500);
     
     return [0, Math.ceil(maxValue * 1.1)]; // Add 10% padding
+  };
+
+  // Format tooltip to show the gas value
+  const formatTooltip = (value, name) => {
+    if (!value) return "0";
+    return value.toFixed(0);
   };
 
   return (
@@ -82,9 +107,15 @@ const GasChart = ({ data }) => {
           />
           <YAxis domain={getDomain()} />
           <Tooltip 
+            formatter={formatTooltip}
             labelFormatter={(label) => `Time: ${label}`}
           />
           <Legend />
+          
+          {/* Reference lines for danger thresholds */}
+          {showSmoke && <ReferenceLine y={500} stroke="#ff0000" strokeDasharray="3 3" label={{ value: 'Smoke Danger', position: 'right', fill: '#ff0000' }} />}
+          {showLPG && <ReferenceLine y={400} stroke="#ff9900" strokeDasharray="3 3" label={{ value: 'LPG Danger', position: 'right', fill: '#ff9900' }} />}
+          {showCO && <ReferenceLine y={300} stroke="#660000" strokeDasharray="3 3" label={{ value: 'CO Danger', position: 'right', fill: '#660000' }} />}
           
           {/* Smoke Sensors */}
           {showSmoke && (
@@ -96,6 +127,7 @@ const GasChart = ({ data }) => {
                 name="Smoke 1" 
                 dot={false}
                 activeDot={{ r: 8 }}
+                strokeWidth={2}
               />
               <Line 
                 type="monotone" 
@@ -104,6 +136,7 @@ const GasChart = ({ data }) => {
                 name="Smoke 2" 
                 dot={false}
                 activeDot={{ r: 8 }}
+                strokeWidth={2}
               />
             </>
           )}
@@ -118,6 +151,7 @@ const GasChart = ({ data }) => {
                 name="LPG 1" 
                 dot={false}
                 activeDot={{ r: 8 }}
+                strokeWidth={2}
               />
               <Line 
                 type="monotone" 
@@ -126,6 +160,7 @@ const GasChart = ({ data }) => {
                 name="LPG 2" 
                 dot={false}
                 activeDot={{ r: 8 }}
+                strokeWidth={2}
               />
             </>
           )}
@@ -140,6 +175,7 @@ const GasChart = ({ data }) => {
                 name="CO 1" 
                 dot={false}
                 activeDot={{ r: 8 }}
+                strokeWidth={2}
               />
               <Line 
                 type="monotone" 
@@ -148,6 +184,7 @@ const GasChart = ({ data }) => {
                 name="CO 2" 
                 dot={false}
                 activeDot={{ r: 8 }}
+                strokeWidth={2}
               />
             </>
           )}
