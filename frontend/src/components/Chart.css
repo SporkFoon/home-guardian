@@ -1,0 +1,125 @@
+/* Chart Styles */
+.chart-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+}
+
+.chart-title {
+  color: #2c3e50;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+.chart-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  color: #7f8c8d;
+  font-style: italic;
+}
+
+/* Tooltip styles */
+.custom-tooltip {
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.custom-tooltip .label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.custom-tooltip .value {
+  color: #2980b9;
+}
+
+.custom-tooltip .status {
+  margin-top: 5px;
+  font-weight: bold;
+}
+
+/* Chart Controls */
+.chart-controls {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.chart-controls label {
+  margin: 0 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.chart-controls input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+/* Threshold indicators */
+.threshold-indicators {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  font-size: 0.8rem;
+}
+
+.threshold {
+  margin: 0 10px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.threshold.smoke {
+  background-color: rgba(255, 0, 0, 0.1);
+  border: 1px solid #ff0000;
+  color: #ff0000;
+}
+
+.threshold.lpg {
+  background-color: rgba(255, 153, 0, 0.1);
+  border: 1px solid #ff9900;
+  color: #ff9900;
+}
+
+.threshold.co {
+  background-color: rgba(102, 0, 0, 0.1);
+  border: 1px solid #660000;
+  color: #660000;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .chart-card {
+    padding: 15px 10px;
+  }
+  
+  .threshold-indicators {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .threshold {
+    margin: 5px 0;
+  }
+  
+  .chart-controls {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .chart-controls label {
+    margin: 5px 0;
+  }
+}
