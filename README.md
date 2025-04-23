@@ -38,7 +38,6 @@ home-guardian/
 - LPG Gas Sensors (MQ-5) x2
 - Carbon Monoxide Sensors (MQ-9) x2
 - Dust Sensor (PMS7003) x1
-- Various resistors, capacitors, and wiring components
 
 ## Software Requirements
 
@@ -107,7 +106,7 @@ home-guardian/
 
 ### Firmware
 
-1. Open the Arduino IDE or PlatformIO IDE
+1. Open the Arduino IDE
 2. Install the required libraries
 3. Copy `credentials.h.template` to `credentials.h` and update with your WiFi details
 4. Update `config.h` with your server URL and device settings
@@ -127,22 +126,7 @@ home-guardian/
 - `GET /api/readings/history?hours=24` - Get historical readings for a specified time period
 - `GET /api/status` - Get current safety status including scores and alerts
 
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 ## Acknowledgments
 
 - OpenWeatherMap API for weather data
-- The ESP32 community for excellent libraries and documentation
-- All contributors who have helped shape this project
+- ESP32 community for libraries and documentation
